@@ -6,59 +6,75 @@ fetch(urlAPI)
         return response.json();
     }
 })
-.then(function(value) {
-    console.log(value);
+.then(function(values) {
+    console.log(values);
 
-    for(let i = 0; i < value.length; i++) {
+    values.forEach( value => {
 
         let gallery = document.querySelector(".gallery");
         let figure = document.createElement("figure");
         let img = document.createElement("img");
         let figcaption = document.createElement("figcaption");
+        let categoryId = document.createElement("p");
 
-        img.setAttribute("src", value[i].imageUrl);
-        figcaption.setAttribute("alt", value[i].title);
+        img.setAttribute("src", value.imageUrl);
+        figcaption.setAttribute("alt", value.title);
         img.setAttribute("crossorigin", "anonymous");
-        
-        figcaption.innerHTML = value[i].title;
+        categoryId.setAttribute("src", value.categoryId);
+        categoryId.setAttribute("crossorigin", "anonymous");
+        figcaption.innerHTML = value.title;
 
         figure.append(img, figcaption);
         gallery.append(figure);
-    }   
-})
-.catch(function(err){
-    console.log("erreur")
+    })
+
+    function filterObjets(values, categoryId) {
+
+                let filteredValues;
+
+                if (categoryId.length === 0) {
+                    filteredValues = values;
+                }else{
+                    filteredValues = values.filter(value => categoryId.includes(value.categoryId));
+                }
+
+                let gallery = document.querySelector(".gallery");
+                gallery.innerHTML = "";
+
+                filteredValues.forEach( value => {
+
+                let figure = document.createElement("figure");
+                let img = document.createElement("img");
+                let figcaption = document.createElement("figcaption");
+
+                img.setAttribute("src", value.imageUrl);
+                figcaption.setAttribute("alt", value.title);
+                img.setAttribute("crossorigin", "anonymous");
+
+                figcaption.innerHTML = value.title;
+
+                figure.append(img, figcaption);
+                gallery.append(figure);
+            
+        });
+    }
+        const noFilter = document.querySelector(".filter-no");
+        noFilter.addEventListener("click", function() {
+            filterObjets(values, []);
+        });
+
+        const boutonObjets1 = document.querySelector(".filter-objets");
+        boutonObjets1.addEventListener("click", function() {
+            filterObjets(values, [1]);
+        });
+
+        const boutonObjets2 = document.querySelector(".filter-appartements");
+        boutonObjets2.addEventListener("click", function() {
+            filterObjets(values, [2]);
+        });
+
+        const boutonObjets3 = document.querySelector(".filter-hotel");
+        boutonObjets3.addEventListener("click", function() {
+            filterObjets(values, [3]);
+        });
 });
-
-const boutonObjets = document.querySelector(".filter-objets");
-
-    boutonObjets.addEventListener("click", function() {
-        const objetsFiltrer = Array.from(categoryId);
-        objetsFiltrer.sort(function (data) {
-            return data.categoryId == 1;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        console.log(objetsFiltrer);
-    });
-
-    const boutonAppartements = document.querySelector(".filter-appartements");
-
-    boutonAppartements.addEventListener("click", function() {
-        const appartementsFiltrer = Array.from(categoryId);
-        appartementsFiltrer.sort(function (data) {
-            return data.categoryId == 2;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        console.log(appartementsFiltrer);
-    });
-
-    const boutonHotel = document.querySelector(".filter-hotel");
-
-    boutonHotel.addEventListener("click", function() {
-        const hotelFiltrer = Array.from(categoryId);
-        hotelFiltrer.sort(function (data) {
-            return data.categoryId == 3;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        console.log(hotelFiltrer);
-    });
