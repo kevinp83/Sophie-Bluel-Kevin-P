@@ -236,7 +236,9 @@ footer {
 	background-color: #fff;
 }
 
-
+footer nav {
+	padding: 20px 50px 20px 0;
+}
 
 
 .here {
