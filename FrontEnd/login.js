@@ -9,25 +9,25 @@ form.addEventListener('submit', async (event) => {
     const email = form.elements.email.value;
     const password = form.elements.password.value;
 
-const response = await fetch("http://localhost:5678/api/users/login", {
-    method: 'post',
-    headers: { 'content-Type': 'application/json'
+    const response = await fetch("http://localhost:5678/api/users/login", {
+        method: 'post',
+        headers: { 'content-Type': 'application/json'
 },
-    body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password })
 });
 
-if (response.ok) {
-    const data = await response.json();
+    if (response.ok) {
+        const data = await response.json();
 
-    localStorage.setItem('token', data.token);
+        localStorage.setItem('token', data.token);
 
-    window.location.href = 'index.html'
-}else {
-    alert("Identifiant ou mot de passe incorrect");
-  }
+        window.location.href = 'index.html'
+    }else {
+        alert("Identifiant ou mot de passe incorrect");
+    }
 })
-.catch(error => {
-    console.error('erreur:', error);
+    .catch(error => {
+        console.error('erreur:', error);
 });
 
 
