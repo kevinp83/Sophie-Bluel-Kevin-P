@@ -245,13 +245,13 @@ footer nav {
 	font-weight: 700;
 }
 
-.login-form {
+.login-style {
 	align-items: center;
     display: flex;
     flex-direction: column;
 }
 
-.login-form-value {
+.login-form {
 	display: flex;
     flex-direction: column;
     padding-top: 30px;
