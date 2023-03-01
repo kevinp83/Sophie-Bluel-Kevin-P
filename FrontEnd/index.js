@@ -61,7 +61,7 @@ fetch(urlAPI)
                 gallery.append(figure);
             
         });
-    } // Création d'événements "au click" pour filtrer les éléments selon leur catégorie
+    } // Création d'événements "au click" sur différent bouton pour filtrer les éléments selon leur catégorie (bouton) séléctionné
         const noFilter = document.querySelector(".filter-no");
         noFilter.addEventListener("click", function() {
             filterObjets(values, []);
@@ -82,3 +82,44 @@ fetch(urlAPI)
             filterObjets(values, [3]);
         });
 });
+
+// Partie concernant la modal de modification de la gallerie
+let modal = null 
+
+
+const openModal = function (e) {
+    e.preventDefault()
+    const target = document.querySelector(e.target.getAttribute('href'))
+    target.style.display = null
+    target.removeAttribute('aria-hidden')
+    target.setAttribute('aria-modal', 'true')
+    modal = target
+    modal.addEventListener('click', closeModal)
+    modal.querySelector('.js-close-modal').addEventListener('click', closeModal)
+    modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation)
+}
+const closeModal = function (e) {
+    if (modal === null) return
+    e.preventDefault()
+    modal.style.display = "none"
+    modal.setAttribute('aria-hidden', 'true')
+    modal.removeAttribute('aria-modal')
+    modal.removeEventListener('click', closeModal)
+    modal.querySelector('.js-close-modal').removeEventListener('click', closeModal)
+    modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation)
+    modal = null
+    }
+
+const stopPropagation = function (e) {
+    e.stopPropagation()
+}
+
+document.querySelectorAll('.js-modal').forEach(a => {
+    a.addEventListener('click', openModal)
+    
+})
+ window.addEventListener('keydown', function (e) {
+    if (e.key === "Escape" || e.key === "Esc") {
+        closeModal(e)
+    }
+ })

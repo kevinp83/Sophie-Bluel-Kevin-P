@@ -7,6 +7,8 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/8829f534f7.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://kit.fontawesome.com/8829f534f7.css" crossorigin="anonymous">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
@@ -35,13 +37,28 @@
 		</article>
 	</section>
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
+		<div class="modal-text-style">
+			<h2>Mes Projets&ensp;&ensp;</h2> <a href="#modal1" class="js-modal" ><i class="fa-light fa-pen-to-square"></i>Modifier</a>
+		</div>
+
+		<aside id="modal1" class="modal" aria-hidden="true" aria-labelledby="modal-title" style="display:none">
+			<div class="modal-wrapper js-modal-stop">
+				<button class="js-close-modal">Fermer modale</button>
+				<h2 id="modal-title">Galerie photo</h2>
+				<div class="modal-gallery"></div>
+				<input type="button" value="Ajouter une photo" class="modal-btn-add-photo">
+				<input type="button" value="Supprimer la galerie" class="modal-delete-gallery">
+			</div>
+		</aside>
+
+
 		<div class="filter">
 			<input type="button" value="Tous" class="filter-no">
 			<input type="button" value="Objets" class="filter-objets">
 			<input type="button" value="Appartements" class="filter-appartements">
 			<input type="button" value="Hôtel & restaurants" class="filter-hotel">
 		</div>
+
 		<div class="gallery"></div>
 
 	</section>
