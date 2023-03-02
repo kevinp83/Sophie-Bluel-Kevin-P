@@ -27,7 +27,7 @@ let adminInfo = {
         const data = await response.json();
 
 // Enregistrement du Token dans le local storage afin de pouvoir s'en servir pour la suite du Projet
-        localStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.token);
 
 // Rediriger l'utilisateur sur la page d'accueil
         window.location.href = 'index.html'
