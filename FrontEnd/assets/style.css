@@ -47,18 +47,52 @@ table {
 	border-spacing: 0;
 }
 /** end reset css**/
-body {
+.header-admin-edition {
+	display: flex;
+	max-width: 1440px;
+	width: 100%;
+	background-color: black;
+	height: 60px;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+}
+
+.container {
 	max-width: 1140px;
+	margin: 0 auto;
+}
+
+body {
+	max-width: 1400px;
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 	background-color: #fffef8;
 }
 
+
+
+.header-admin-edition p {
+	color: white;
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.header-admin-edition button {
+	background-color: white;
+	border-radius: 60px;
+	height: 35px;
+	width: 210px;
+	border: none;
+	font-size: 14px;
+	font-weight: 500;
+}
+
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 80px;
+	padding-top: 50px;
 }
 
 section {
@@ -103,7 +137,7 @@ nav li {
 	color: black;
  }
 
- .instagram-link {
+.instagram-link {
 	width: 19px;
 	height: 19px;
  }
@@ -117,6 +151,10 @@ li:hover {
 	align-items: center;
 }
 
+.presentation-txt p{
+	max-width: 425px;
+}
+
 #introduction figure {
 	flex: 1
 }
@@ -125,6 +163,11 @@ li:hover {
 	display: block;
 	margin: auto;
 	width: 80%;
+}
+
+#introduction figcaption {
+	width: 80%;
+	margin: auto;
 }
 
 #introduction article {
@@ -242,7 +285,6 @@ li:hover {
 .filter {
 	display: flex;
 	margin-bottom: 50px;
-	margin-top: 50px;
 	justify-content: center;
 }
 
@@ -267,19 +309,20 @@ input[type="button"]:focus {
 }
 
 
-
-
-
 .gallery {
 	width: 100%;
 	display: grid;
+	max-width: 950px;
+	margin: auto;
 	grid-template-columns: 1fr 1fr 1fr;
-	grid-column-gap: 20px;
 	grid-row-gap: 20px;
+	grid-column-gap: 15px;
+	justify-content: space-between;
 }
 
 .gallery img {
 	width: 100%;
+	max-width: 310px;
 }
 
 #contact {

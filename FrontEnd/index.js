@@ -88,12 +88,32 @@ fetch(urlAPI)
 
 // Partie concernant la modal de modification de la gallerie
 let modal = null 
-
+// Vérification de la rpésence du token dans session Storage, pour pouvoir générer 
+// l'affichage de la modale et des différent filtre admin
 const token = sessionStorage.getItem('token');
 
 if (token) {
     document.querySelectorAll('.js-modal').forEach(a => {
         a.style.display = 'inline-block';
+
+// Suppression des boutons filtre si token présent dans session storage
+    document.querySelector('.filter').style.display = 'none';
+
+// Ajout de l'élément "mode édition" si présence du Token
+const headerAdmin = document.querySelector('.header-admin-edition')
+    headerAdmin.style.display = null;
+    headerAdmin.removeAttribute('aria-hidden');
+
+// Ajout de l'élèment "modifier" en dessous de l'image de sophie bluel
+    let imgBluel = document.querySelector(".img-bluel");
+    let figcaption = document.createElement("figcaption");
+
+    figcaption.setAttribute("crossorigin", "anonymous");
+    imgBluel.append(figcaption);
+    figcaption.innerHTML = "modifier"
+
+// 
+
 
     const openModal = function (e) {
         e.preventDefault();
@@ -109,7 +129,7 @@ if (token) {
         modal.querySelector('.js-close-modal').addEventListener('click', closeModal);
         modal.querySelector('.js-modal-stop').addEventListener('click', stopPropagation);
 
-// On vide la modale avant chaque ouverture, pour éviter le chargement des images en double-triple etc lors de plusieurs ouvertures
+// On vide la modale avant chaque ouverture, pour éviter le chargement des images en double-triple etc
     document.querySelector(".modal-gallery").innerHTML = "";
 
     values.forEach( value => {

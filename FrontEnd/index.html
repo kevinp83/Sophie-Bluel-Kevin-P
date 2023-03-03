@@ -12,33 +12,41 @@
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-<header>
+<div class="header-admin-edition" aria-hidden="true" aria-labelledby="admin-edition" style="display:none">
+	<p><i class="fa-solid fa-pen-to-square"></i>&ensp;Mode édition</p>
+	<form class="post-changes">
+		<button class="btn-post-changes">publier les changements</button>
+	</form> 
+</div>
+<header class="container">
 	<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 	<nav>
 		<ul>
-			<a href="#portfolio"><li>projets</li></a>
+			<a href="#portfolio" class="here"><li>projets</li></a>
 			<a href="#contact"><li>contact</li></a> 
 			<a href="login.html"><li>login</li></a> 
 			<li><img class="instagram-link" src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
 </header>
-<main>
+<main class="container">
 	<section id="introduction">
-		<figure>
+		<figure class="img-bluel">
 			<img src="./assets/images/sophie-bluel.png" alt="">
 		</figure>
-		<article>
+		<article class="presentation-txt">
 			<h2>Designer d'espace</h2>
 			<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison finale du chantier.</p>
-			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, le respect du planning et du budget.</p>
+			<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les couleurs dans le respect 
+				de l’esprit des lieux et le choix adapté des matériaux. Le suivi du chantier sera assuré dans le souci du détail, 
+				le respect du planning et du budget.</p>
 			<p>En cas de besoin, une équipe pluridisciplinaire peut-être constituée : architecte DPLG, décorateur(trice)</p>
 		</article>
 	</section>
 	<section id="portfolio">
 		<div class="modal-text-style">
 			<h2>Mes Projets&ensp;&ensp;</h2> 
-			<a href="#modal1" id="modal-link" class="js-modal" style="display: none"><i class="fa-light fa-pen-to-square" ></i>Modifier</a>
+			<a href="#modal1" id="modal-link" class="js-modal" style="display: none"><i class="fa-solid fa-pen-to-square"></i></i>&ensp;Modifier</a>
 		</div>
 
 		<aside id="modal1" class="modal" aria-hidden="true" aria-labelledby="modal-title" style="display:none">
