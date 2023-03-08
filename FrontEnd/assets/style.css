@@ -186,7 +186,7 @@ li:hover {
 }
 /* Section style de la modal1 */
 
-.modal { 
+.modal, .modal2 { 
 	position: fixed;
 	display: flex;
 	justify-content: center;
@@ -234,7 +234,7 @@ li:hover {
 	color: black;
 }
 
-.modal-btn-add-photo {
+.modal-btn-add-photo, .modal-btn-valid {
 	display: flex;
 	margin: auto;
 	font-family: 'Syne';
@@ -249,6 +249,15 @@ li:hover {
 	border: solid 2px #1D6154;
 	color: white;
 	background-color: #1D6154;
+}
+/* Positionnement des Trash can */ 
+.modal-gallery figure {
+	position: relative;
+}
+.fa-trash-can {
+	position: absolute;
+	top: 5px;
+	right: 5px;
 }
 
 .modal-delete-gallery {
@@ -281,6 +290,31 @@ li:hover {
 	height: 110px;
 }
 
+/* Style modal 2 */ 
+.modal-add {
+	display: flex;
+	margin: auto;
+	flex-direction: column;
+	width: 420px;
+	height: 170px;
+	background-color: #E8f1f6;
+	border-radius: 3px;
+	padding: 25px;
+	text-align: center;
+	margin: auto;
+  }
+
+#file-input {
+	display: flex;
+	align-self: center;
+	background-color: #cbd6dc;
+	color: #306685;
+	font-weight: 500;
+	font-size: 14px;
+	width: 175px;
+	height: 35px;
+	border-radius: 50px;
+}
 
 .filter {
 	display: flex;
