@@ -52,6 +52,15 @@ fetch(urlAPI)
         headerAdmin.style.display = null;
         headerAdmin.removeAttribute("aria-hidden");
 
+        const btnBack = document.querySelector(".back");
+        btnBack.addEventListener("click", function () {
+          const modal2 = document.querySelector("#modal2");
+          const modal1 = document.querySelector("#modal1");
+          modal2.style.display = "none";
+          modal1.style.display = "block";
+          modal = modal1;
+        });
+
         const openModal = (e) => {
           e.preventDefault();
           closeModal();
@@ -100,12 +109,13 @@ fetch(urlAPI)
 
         link.addEventListener("click", openModal);
 
+
+
         const openModal2 = (e) => {
           e.preventDefault();
           closeModal();
 
           const target2 = document.querySelector("#modal2");
-
           target2.style.display = "block";
           target2.removeAttribute("aria-hidden");
           target2.setAttribute("aria-modal", "true");
@@ -117,14 +127,13 @@ fetch(urlAPI)
           modal
             .querySelector(".js-modal-stop")
             .addEventListener("click", stopPropagation);
-          modal
-            .querySelector(".back")
-            .addEventListener("click", function() {
-              closeModal();
-              openModal();
-            });
-        };
 
+          modal.addEventListener("click", function (e) {
+            if (e.target === modal) {
+              closeModal();
+            }
+          });
+        };
       });
     } else {
       const modalLinks = document.querySelectorAll(".js-modal");
@@ -160,22 +169,37 @@ fetch(urlAPI)
     /* Afficher l'image en miniature, ne fonctionne pas */
     const inputFile = document.querySelector("#file-input");
     const modalImage = document.querySelector(".modal-add-img");
+    const previewImage = document.querySelector("#preview-img"); // Ajout de la variable pour la miniature
+    let img;
 
     inputFile.addEventListener("change", function () {
-      if (img) {
+
+      if (img && modalImage.contains(img)) {
         modalImage.removeChild(img);
       }
 
       img = document.createElement("img");
       img.src = window.URL.createObjectURL(this.files[0]);
       img.onload = function () {
-        URL.revokeObjectURL(this.src);
+        window.URL.revokeObjectURL(this.src);
       };
       modalImage.appendChild(img);
+
+      // Affichage de la miniature
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        previewImage.src = event.target.result;
+      };
+      reader.readAsDataURL(this.files[0]);
+    });
+
+    // Gestion d'erreur pour la promesse asynchrone
+    window.addEventListener('unhandledrejection', function (event) {
+      console.log("Erreur :", event.reason);
     });
   })
   .catch(function (err) {
-    console.log("erreur");
+    console.log("erreur", err);
   });
 
 function displayOne(value) {
@@ -228,3 +252,43 @@ function deleteWork(id, token) {
     .then((response) => response.json())
     .then((json) => console.log(json));
 };
+
+function addData() {
+  const urlAPI = "http://localhost:5678/api/works";
+  const title = document.querySelector("#title").value;
+  const imageUrl = document.querySelector("#file-input").files[0];
+
+  const formData = new FormData();
+  formData.append("title", title);
+  formData.append("imageUrl", imageUrl);
+
+
+
+  fetch(urlAPI, {
+    method: "POST",
+    headers: {
+      "Authorization": "Bearer " + sessionStorage.getItem("token")
+    },
+    body: formData
+  })
+    .then(function (response) {
+      if (response.ok) {
+        closeModal();
+        return response.json();
+      } else {
+        throw new Error("Network response was not ok");
+      }
+    })
+    .then(function (data) {
+      console.log(data);
+      displayOne(data);
+    })
+    .catch(function (error) {
+      console.error("Error adding data:", error);
+    });
+}
+const btnValidModal2 = document.querySelector('.btn-valid-modal2');
+btnValidModal2.addEventListener('click', function (event) {
+  event.preventDefault();
+  addData();
+});
