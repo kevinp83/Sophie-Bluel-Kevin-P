@@ -23,6 +23,19 @@ window.addEventListener("keydown", (e) => {
     closeModal(e);
   }
 });
+
+function getData(urlAPI) {
+  fetch(urlAPI)
+  .then(function (response) {
+    if (response.ok) {
+      return response.json();    //recuperation des données au format json pour pouvoir s'en servir dans la suite du code
+    }
+  })
+  .then(function (values) {
+    return(values);
+  });
+}
+
 // Appel a l'API via la const urlAPI
 fetch(urlAPI)
   .then(function (response) {
@@ -31,11 +44,7 @@ fetch(urlAPI)
     }
   })
   .then(function (values) {
-    console.log(values);
-
-    values.forEach((value) => {
-      displayOne(value);
-    });
+    displayAll(values);
 
     // Création d'événements "au click" sur différent bouton pour filtrer les éléments selon leur catégorie (bouton) séléctionné
     const noFilter = document.querySelector(".filter-no");
@@ -112,7 +121,7 @@ fetch(urlAPI)
             modalGallery.append(figure);
 
             delete1Work.addEventListener("click", function () {
-              deleteWork(value.id, token);
+              deleteWork(value.id, token, values);
             });
           });
 
@@ -228,16 +237,10 @@ function filterObjets(values, categoryId) {
       categoryId.includes(value.categoryId)
     );
   }
-  // On vide les éléments HTML présent dans Gallery
-  document.querySelector(".gallery").innerHTML = "";
-
-  // Itération sur les objets filtrés pour créer les éléments HTML ci-joints
-  filteredValues.forEach((value) => {
-    displayOne(value);
-  });
+  displayAll(filteredValues);
 };
 
-const deleteWork = (id, token) => {
+const deleteWork = (id, token, values) => {
 
   fetch(urlAPI + "/" + id, {
     method: "DELETE",
@@ -249,27 +252,14 @@ const deleteWork = (id, token) => {
       if (response.ok) {
         alert("La suppression de l'élément a fonctionner");
         closeModal();
-        refreshPage();
+        displayAll(values);
       } else {
         alert("La suppréssion de l'élément pose un problème, veuillez contacter l'équipe de maintenance du site.", response);
       }
     })
     .then((value) => {
       console.log(value);
-      refreshPage();
-    });
-};
-
-const refreshPage = () => {
-  fetch(urlAPI)
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      }
-    })
-    .then(function (values) {
-      console.log(values);
-      filterObjets(values, []);
+      displayAll(values);
     });
 };
 
@@ -338,3 +328,13 @@ btnValidModal2.addEventListener('click', function (event) {
   event.preventDefault();
   addData();
 });
+
+function displayAll(values){
+  
+  // On vide les éléments HTML présent dans Gallery
+  document.querySelector(".gallery").innerHTML = "";
+
+  values.forEach((values) => {
+    displayOne(value);
+  });
+}
