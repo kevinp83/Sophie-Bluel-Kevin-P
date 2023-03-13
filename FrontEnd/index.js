@@ -1,5 +1,28 @@
 // Ici je met l'url de l'API sous const pour pouvoir l'appeler plus facilement par la suite
 const urlAPI = "http://localhost:5678/api/works";
+let modal = null;
+const closeModal = (e) => {
+  if (modal === null) return;
+
+  if (e) {
+    e.preventDefault();
+  }
+
+  modal.style.display = "none";
+  modal.setAttribute("aria-hidden", "true");
+  modal.removeAttribute("aria-modal");
+  modal = null;
+};
+
+const stopPropagation = (e) => {
+  e.stopPropagation();
+};
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" || e.key === "Esc") {
+    closeModal(e);
+  }
+});
 // Appel a l'API via la const urlAPI
 fetch(urlAPI)
   .then(function (response) {
@@ -34,8 +57,6 @@ fetch(urlAPI)
     boutonObjets3.addEventListener("click", function () {
       filterObjets(values, [3]);
     });
-
-    let modal = null;
 
     let token = sessionStorage.getItem("token");
 
@@ -109,8 +130,6 @@ fetch(urlAPI)
 
         link.addEventListener("click", openModal);
 
-
-
         const openModal2 = (e) => {
           e.preventDefault();
           closeModal();
@@ -142,34 +161,10 @@ fetch(urlAPI)
         link.style.display = "none";
       });
     }
-
-    const closeModal = (e) => {
-      if (modal === null) return;
-
-      if (e) {
-        e.preventDefault();
-      }
-
-      modal.style.display = "none";
-      modal.setAttribute("aria-hidden", "true");
-      modal.removeAttribute("aria-modal");
-      modal = null;
-    };
-
-    const stopPropagation = (e) => {
-      e.stopPropagation();
-    };
-
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" || e.key === "Esc") {
-        closeModal(e);
-      }
-    });
-
-    /* Afficher l'image en miniature, ne fonctionne pas */
+    // Ajout de l'image en miniature après le téléchargement
     const inputFile = document.querySelector("#file-input");
     const modalImage = document.querySelector(".modal-add-img");
-    const previewImage = document.querySelector("#preview-img"); // Ajout de la variable pour la miniature
+    const previewImage = document.querySelector("#preview-img");
     let img;
 
     inputFile.addEventListener("change", function () {
@@ -202,12 +197,12 @@ fetch(urlAPI)
     console.log("erreur", err);
   });
 
-function displayOne(value) {
+const displayOne = (value) => {
   // Création d'élément HTML à partir des valeurs JSON récuperer depuis l'API
-  let gallery = document.querySelector(".gallery");
-  let figure = document.createElement("figure");
-  let img = document.createElement("img");
-  let figcaption = document.createElement("figcaption");
+  const gallery = document.querySelector(".gallery");
+  const figure = document.createElement("figure");
+  const img = document.createElement("img");
+  const figcaption = document.createElement("figcaption");
 
   img.setAttribute("src", value.imageUrl);
   figcaption.setAttribute("alt", value.title);
@@ -242,27 +237,66 @@ function filterObjets(values, categoryId) {
   });
 };
 
-function deleteWork(id, token) {
-  console.log(id);
+const deleteWork = (id, token) => {
 
-  fetch(`http://localhost:5678/api/works/${id}`, {
+  fetch(urlAPI + "/" + id, {
     method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   })
-    .then((response) => response.json())
-    .then((json) => console.log(json));
+    .then((response) => {
+      if (response.ok) {
+        alert("La suppression de l'élément a fonctionner");
+        closeModal();
+        refreshPage();
+      } else {
+        alert("La suppréssion de l'élément pose un problème, veuillez contacter l'équipe de maintenance du site.", response);
+      }
+    })
+    .then((value) => {
+      console.log(value);
+      refreshPage();
+    });
+};
+
+const refreshPage = () => {
+  fetch(urlAPI)
+    .then(function (response) {
+      if (response.ok) {
+        return response.json();
+      }
+    })
+    .then(function (values) {
+      console.log(values);
+      filterObjets(values, []);
+    });
 };
 
 function addData() {
   const urlAPI = "http://localhost:5678/api/works";
   const title = document.querySelector("#title").value;
   const imageUrl = document.querySelector("#file-input").files[0];
+  const select = document.querySelector("#category");
+  const options = select.options;
+  const categoryIds = {
+    "1": 1,
+    "2": 2,
+    "3": 3
+  };
+
+  const categoryId = categoryIds[options[select.selectedIndex].value];
+
+  if (!title || !imageUrl || !categoryId) {
+    alert("Veuillez remplir tout les champs du formulaire.");
+    return;
+  }
 
   const formData = new FormData();
+
   formData.append("title", title);
-  formData.append("imageUrl", imageUrl);
-
-
+  formData.append("image", imageUrl);
+  formData.append("category", categoryId);
 
   fetch(urlAPI, {
     method: "POST",
@@ -274,19 +308,31 @@ function addData() {
     .then(function (response) {
       if (response.ok) {
         closeModal();
+        alert("L'ajout du nouveau projet a fonctionné");
         return response.json();
       } else {
-        throw new Error("Network response was not ok");
+        throw new Error("Réponse négative du serveur");
       }
     })
     .then(function (data) {
       console.log(data);
       displayOne(data);
+      refreshPage();
     })
     .catch(function (error) {
       console.error("Error adding data:", error);
+      alert("Une erreur est survenue lors de l'ajout des éléments. Veuillez réessayer ou joindre l'équipe si le problème persiste.")
     });
 }
+let newValues;
+
+fetch(urlAPI)
+  .then(function (response) {
+    if (response.ok) {
+      return response.json();
+    }
+  })
+
 const btnValidModal2 = document.querySelector('.btn-valid-modal2');
 btnValidModal2.addEventListener('click', function (event) {
   event.preventDefault();

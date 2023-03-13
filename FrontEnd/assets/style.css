@@ -3,87 +3,12 @@
    License: none (public domain)
 */
 
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,
+a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,
+strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,
+label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,
+details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,
+section,summary,time,mark,audio,video {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -93,17 +18,7 @@ video {
 }
 
 /* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
+article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section {
 	display: block;
 }
 
@@ -121,9 +36,7 @@ q {
 	quotes: none;
 }
 
-blockquote:before,
-blockquote:after,
-q:before,
+blockquote:before, blockquote:after, q:before,
 q:after {
 	content: '';
 	content: none;
@@ -158,8 +71,6 @@ body {
 	font-size: 14px;
 	background-color: #fffef8;
 }
-
-
 
 .header-admin-edition p {
 	color: white;
@@ -312,6 +223,7 @@ li:hover {
 .size-img {
 	margin-bottom: 10px;
 }
+
 .modal-wrapper {
 	overflow: auto;
 	margin: auto;
@@ -353,8 +265,6 @@ li:hover {
 	background-color: #1D6154;
 }
 
-
-
 /* Positionnement des Trash can */
 .modal-gallery figure {
 	position: relative;
@@ -382,11 +292,10 @@ li:hover {
 
 .modal-gallery {
 	display: flex;
-	justify-content: space-between;
 	flex-wrap: wrap;
 	margin-left: 80px;
 	margin-right: 80px;
-	gap: 7px;
+	gap: 13px;
 	padding-bottom: 60px;
 	border-bottom: 1px solid #b3b3b3;
 }
@@ -440,6 +349,7 @@ li:hover {
 	width: 60px;
 	height: 50px;
 }
+
 .btn-add-photo {
 	position: relative;
 	display: inline-block;
@@ -471,6 +381,7 @@ li:hover {
 	padding-top: 15px;
 	padding-bottom: 15px;
 }
+
 .title-img-modal,
 .dropdown-list {
 	display: flex;
@@ -508,6 +419,7 @@ li:hover {
 .category {
 	margin-bottom: 10px;
 }
+
 .title-label {
 	align-self: flex-start;
 }
