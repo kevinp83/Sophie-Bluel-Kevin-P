@@ -24,29 +24,21 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-function getData(urlAPI) {
-  fetch(urlAPI)
-  .then(function (response) {
-    if (response.ok) {
-      return response.json();    //recuperation des données au format json pour pouvoir s'en servir dans la suite du code
-    }
-  })
-  .then(function (values) {
-    return(values);
-  });
-}
+let dataTable = [];
 
-// Appel a l'API via la const urlAPI
 fetch(urlAPI)
   .then(function (response) {
     if (response.ok) {
-      return response.json();    //recuperation des données au format json pour pouvoir s'en servir dans la suite du code
+      return response.json();
     }
   })
   .then(function (values) {
-    displayAll(values);
+    values.forEach(function(element) {
+      dataTable.push(element);
+    });
 
-    // Création d'événements "au click" sur différent bouton pour filtrer les éléments selon leur catégorie (bouton) séléctionné
+    displayAll(dataTable);
+    
     const noFilter = document.querySelector(".filter-no");
     noFilter.addEventListener("click", function () {
       filterObjets(values, []);
@@ -105,25 +97,7 @@ fetch(urlAPI)
           const modalGallery = modal.querySelector(".modal-gallery");
           modalGallery.innerHTML = "";
 
-          values.forEach((value) => {
-            figure = document.createElement("figure");
-            img = document.createElement("img");
-            figcaption = document.createElement("figcaption");
-            categoryId = document.createElement("p");
-            const delete1Work = document.createElement("i");
-
-            img.setAttribute("src", value.imageUrl);
-            figcaption.setAttribute("alt", value.title);
-            figcaption.textContent = "Editer";
-            categoryId.setAttribute("src", value.categoryId);
-            delete1Work.classList.add("fa-solid", "fa-trash-can");
-            figure.append(img, figcaption, delete1Work);
-            modalGallery.append(figure);
-
-            delete1Work.addEventListener("click", function () {
-              deleteWork(value.id, token, values);
-            });
-          });
+          displayAllModal(dataTable);
 
           const modalBtnAddPhoto = modal.querySelector(".modal-btn-add-photo");
           modalBtnAddPhoto.addEventListener("click", openModal2);
@@ -189,7 +163,6 @@ fetch(urlAPI)
       };
       modalImage.appendChild(img);
 
-      // Affichage de la miniature
       const reader = new FileReader();
       reader.onload = function (event) {
         previewImage.src = event.target.result;
@@ -203,13 +176,15 @@ fetch(urlAPI)
     });
   })
   .catch(function (err) {
-    console.log("erreur", err);
+    // console.log("erreur", err);
   });
 
-const displayOne = (value) => {
-  // Création d'élément HTML à partir des valeurs JSON récuperer depuis l'API
+const displayGalleryItem = (value) => {
+ // Remplissage de la gallery
   const gallery = document.querySelector(".gallery");
   const figure = document.createElement("figure");
+  figure.setAttribute("id", value.id);
+
   const img = document.createElement("img");
   const figcaption = document.createElement("figcaption");
 
@@ -232,7 +207,6 @@ function filterObjets(values, categoryId) {
   if (categoryId.length === 0) {
     filteredValues = values;
   } else {
-    //Sinon, on filtrera les objets pour afficher seulement ceux dont la catégorie est mentionner au click boutton
     filteredValues = values.filter((value) =>
       categoryId.includes(value.categoryId)
     );
@@ -240,7 +214,7 @@ function filterObjets(values, categoryId) {
   displayAll(filteredValues);
 };
 
-const deleteWork = (id, token, values) => {
+const deleteWork = (id, token = sessionStorage.getItem("token")) => {
 
   fetch(urlAPI + "/" + id, {
     method: "DELETE",
@@ -250,18 +224,17 @@ const deleteWork = (id, token, values) => {
   })
     .then((response) => {
       if (response.ok) {
-        alert("La suppression de l'élément a fonctionner");
-        closeModal();
-        displayAll(values);
+       alert("La suppression de l'élément a fonctionner");
+        // document.getElementById(id).innerHTML ="";
+        retirerElement(id);
+        displayAll(dataTable);
+        displayAllModal(dataTable);
+        // closeModal();
       } else {
-        alert("La suppréssion de l'élément pose un problème, veuillez contacter l'équipe de maintenance du site.", response);
+        console.error("La suppression de l'élément pose un problème, veuillez contacter l'équipe de maintenance du site.", response);
       }
     })
-    .then((value) => {
-      console.log(value);
-      displayAll(values);
-    });
-};
+  };
 
 function addData() {
   const urlAPI = "http://localhost:5678/api/works";
@@ -305,9 +278,11 @@ function addData() {
       }
     })
     .then(function (data) {
-      console.log(data);
-      displayOne(data);
-      refreshPage();
+      
+      // displayGalleryItem(data);
+      dataTable.push(data);
+      displayAll(dataTable);
+      displayAllModal(dataTable);
     })
     .catch(function (error) {
       console.error("Error adding data:", error);
@@ -330,11 +305,41 @@ btnValidModal2.addEventListener('click', function (event) {
 });
 
 function displayAll(values){
-  
-  // On vide les éléments HTML présent dans Gallery
   document.querySelector(".gallery").innerHTML = "";
-
-  values.forEach((values) => {
-    displayOne(value);
+  
+  values.forEach((value) => {
+    displayGalleryItem(value);
   });
+}
+
+function displayAllModal(values) {
+  modalGallery = document.querySelector(".modal-gallery");
+  modalGallery.innerHTML = "";
+  values.forEach((value) => {
+    figure = document.createElement("figure");
+    img = document.createElement("img");
+    figcaption = document.createElement("figcaption");
+    categoryId = document.createElement("p");
+    const delete1Work = document.createElement("i");
+
+    img.setAttribute("src", value.imageUrl);
+    figcaption.setAttribute("alt", value.title);
+    figcaption.textContent = "Editer";
+    categoryId.setAttribute("src", value.categoryId);
+    delete1Work.classList.add("fa-solid", "fa-trash-can");
+    figure.append(img, figcaption, delete1Work);
+    modalGallery.append(figure);
+
+    delete1Work.addEventListener("click", function () {
+      deleteWork(value.id);
+    });
+  });
+}
+
+function retirerElement(id) {
+  for(let i = 0; i < dataTable.length; i++){
+    if(dataTable[i].id === id){
+      dataTable.splice(i, 1);           
+    }
+  }
 }
